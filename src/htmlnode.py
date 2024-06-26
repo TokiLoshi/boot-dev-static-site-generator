@@ -1,5 +1,3 @@
-from textnode import TextNode
-
 class HTMLNode:
   def __init__(self, tag=None, value=None, children=None, props=None):
     self.tag = tag
@@ -8,7 +6,7 @@ class HTMLNode:
     self.props = props
 
   def to_html(self):
-    raise NotImplementedError
+    raise NotImplementedError("to_html method not implemented")
 
   def props_to_html(self):
     props_string = ""
@@ -42,19 +40,22 @@ class ParentNode(HTMLNode):
 
   def to_html(self):
     if self.tag is None:
-      raise ValueError("All parent nodes require a tag")
-    elif len(self.children) == 0:
-      raise ValueError("All parent nodes require children")
+      raise ValueError("Invalid HTML: All parent nodes require a tag")
+    if self.children is None:
+      raise ValueError("Invalid HTML: All parent nodes require children")
     else:
-      children_list = []
-      for node in self.children:
-        if node is None:
-          continue
-        children_list.append(node.to_html())
-      children_string = "".join(children_list)
-      props_html = self.props_to_html()
-      final_html = f"<{self.tag}{props_html}>{children_string}</{self.tag}>"
-      return final_html
+      children_html = ""
+      for child in self.children:
+        children_html += child.to_html()
+      return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
+
+      #   if node is None:
+      #     continue
+      #   children_list.append(node.to_html())
+      # children_string = "".join(children_list)
+      # props_html = self.props_to_html()
+      # final_html = f"<{self.tag}{props_html}>{children_string}</{self.tag}>"
+      # return final_html
       
 
   def __repr__(self):

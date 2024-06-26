@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode, ParentNode, TextNodeType
+from htmlnode import HTMLNode, LeafNode, ParentNode
 from textnode import TextNode
 
 class TestHTMLNode(unittest.TestCase):
@@ -26,6 +26,12 @@ class TestHTMLNode(unittest.TestCase):
     parent_node = HTMLNode("div", children=[child_node])
     self.assertEqual(parent_node.children, [child_node])
 
+  def test_grand_children_handling(self):
+    grandchild_node = LeafNode("b", "bold text")
+    child_node = ParentNode("span", [grandchild_node])
+    parent_node = ParentNode("div", children=[child_node])
+    self.assertEqual(parent_node.to_html(), '<div><span><b>bold text</b></span></div>')
+
 class TestLeafNode(unittest.TestCase):
   def test_leaf_init(self):
     leaf_node = LeafNode("p", "This is a paragraph")
@@ -38,10 +44,20 @@ class TestLeafNode(unittest.TestCase):
     leaf_node = LeafNode("p", "This is a paragraph")
     self.assertEqual(leaf_node.to_html(), "<p>This is a paragraph</p>")
 
-def test_to_html_empty(self):
-  empty_leaf_node = LeafNode("p", None)
-  with self.assertRaises(ValueError):
-    empty_leaf_node.to_html()
+  def test_to_html_empty(self):
+    empty_leaf_node = LeafNode("p", None)
+    with self.assertRaises(ValueError):
+      empty_leaf_node.to_html()
+
+  def test_to_html_many_children(self):
+        node1 = ParentNode("p", [LeafNode("i", "Italic text"), LeafNode(None, "Normal text"), LeafNode("b", "bold text"), LeafNode(None, "Normal text"),
+            ],
+        )
+        self.assertEqual(
+            node1.to_html(),
+            "<p><i>Italic text</i>Normal text<b>bold text</b>Normal text</p>",
+        )
+        
 
 class TestParentNode(unittest.TestCase):
   def test_parent_init(self):
