@@ -25,7 +25,6 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     print(f"Node: {old_node}")
     if old_node.text_type != text_type_text:
       new_nodes_list.append(old_node)
-      print("About to continue", new_nodes_list)
       continue
     split_nodes = []
     sections = old_node.text.split(delimiter)
@@ -51,6 +50,52 @@ def extract_markdown_images(text):
 def extract_markdown_links(text):
   parse_text = re.findall(r"\[(.*?)\]\((.*?)\)", text)
   return parse_text
+
+def split_nodes_images(old_nodes):
+  new_nodes_list = [] 
+  for old_node in old_nodes:
+    if old_node.text_type != text_type_text:
+      new_nodes_list.append(old_node) 
+      continue
+    original_text = old_node.text
+    images = extract_markdown_images(original_text)
+    if len(images) == 0:
+      new_nodes_list.append(old_node)
+      continue
+    for image in images:
+      sections = original_text.split(f"![{image[0]}]({image[1]})", 1)
+      if len(sections) != 2:
+        raise ValueError("Invalid Markdown syntax, image section not closed")
+      if sections[0] != "":
+        new_nodes_list.append(TextNode(sections[0], text_type_text))
+        new_nodes_list.append(TextNode(image[0], text_type_image, image[1]))
+      original_text = sections[1]
+      if original_text != "":
+        new_nodes_list.append(TextNode(original_text, text_type_text))
+  return new_nodes_list
+
+def split_nodes_link(old_nodes):
+  new_nodes_list = []
+  for old_node in old_nodes:
+    if old_node.text_type != text_type_text:
+      new_nodes_list.append(old_node)
+      continue
+    original_text = old_node.text
+    links = extract_markdown_links(original_text)
+    if len(links) == 0:
+      new_nodes_list.append(old_node)
+      continue
+    for link in links:
+      sections = original_text.split(f"[{link[0]}]({link[1]})", 1)
+      if len(sections) != 2:
+        raise ValueError("Invalid Markdown syntax, link section not closed")
+      if sections[0] != "":
+        new_nodes_list.append(TextNode(sections[0], text_type_text))
+      new_nodes_list.append(TextNode(link[0], text_type_link, link[1]))
+      original_text = sections[1]
+      if original_text != "":
+        new_nodes_list.append(TextNode(original_text, text_type_text))
+  return new_nodes_list     # if it's text then we want to append each part that's text 
 
 
 def main():

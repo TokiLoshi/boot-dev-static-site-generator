@@ -1,6 +1,6 @@
 import unittest
 
-from inline_markdown import split_nodes_delimiter, extract_markdown_links, extract_markdown_images
+from inline_markdown import split_nodes_delimiter, extract_markdown_links, extract_markdown_images, split_nodes_link, split_nodes_images
 
 from textnode import (
   TextNode,
@@ -9,6 +9,7 @@ from textnode import (
   text_type_italic,
   text_type_code,
   text_type_link,
+  text_type_image
 )
 
 class TestInlineMarkdown(unittest.TestCase):
@@ -42,3 +43,15 @@ class TestLinkExtractor(unittest.TestCase):
     text = text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
     images = extract_markdown_images(text)
     self.assertListEqual([("image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"), ("another", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png")], images)
+
+  def test_split_image_node(self):
+    single_image_node = [TextNode("Text with one image ![image](https://boot.dev/bootsiscute)", text_type_text)]
+    self.assertEqual([TextNode("Text with one image ", text_type_text), TextNode("image", text_type_image, "https://boot.dev/bootsiscute")], split_nodes_images(single_image_node))
+
+  def test_split_link_node(self):
+    single_link_node = [TextNode("Text with one link [link](https://boot.dev/bootsiscute)", text_type_text)]
+    self.assertEqual([TextNode("Text with one link ", text_type_text), TextNode("link", text_type_link, "https://boot.dev/bootsiscute")], split_nodes_link(single_link_node))
+
+
+if __name__ == "__main__":
+  unittest.main()
