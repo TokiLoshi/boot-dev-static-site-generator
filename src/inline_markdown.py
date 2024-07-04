@@ -22,17 +22,14 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
   
   new_nodes_list = []
   for old_node in old_nodes:
-    print(f"Node: {old_node}")
     if old_node.text_type != text_type_text:
       new_nodes_list.append(old_node)
       continue
     split_nodes = []
     sections = old_node.text.split(delimiter)
-    print("Sections: ", sections)
     if len(sections) % 2 == 0:
       raise ValueError("That's invalid Markdown syntax, please add the correct closing delimiter")
     for i in range(len(sections)):
-      print("segment: ", sections[i])
       if sections[i] == "":
         continue
       if i % 2 == 0:
@@ -117,9 +114,9 @@ def main():
   text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
   # matches = re.findall(r"\w+@\w+\.\w+", text)
   matches = extract_markdown_images(text)
-  print(f"MATHCES: {matches}") # ['lane@example.com', 'hunter@example.com']
+  # print(f"MATHCES: {matches}") # ['lane@example.com', 'hunter@example.com']
   text2 = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
-  print(extract_markdown_links(text))
+  # print(extract_markdown_links(text))
   # [("link", "https://www.example.com"), ("another", "https://www.example.com/another")]
 
     
