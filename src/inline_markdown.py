@@ -1,4 +1,5 @@
 import re
+
 from textnode import (
   TextNode,
   text_type_text,

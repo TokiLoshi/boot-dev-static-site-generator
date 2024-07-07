@@ -1,4 +1,6 @@
 from htmlnode import LeafNode, ParentNode
+from inline_markdown import text_to_textnodes
+from textnode import text_node_to_html_node
 
 block_type_paragraph = "paragraph"
 block_type_heading = "heading"
@@ -7,22 +9,6 @@ block_type_quote = "quote"
 block_type_unordered_list = "unordered_list"
 block_type_ordered_list = "ordered_list"
 
-# def markdown_to_blocks(markdown):
-#   blocks = [] 
-#   current_block = []
-#   lines = markdown.split("\n")
-#   for line in lines: 
-#     stripped_line = line.strip()
-#     if stripped_line == "":
-#       if current_block:
-#         blocks.append(current_block)
-#         current_block = []
-#     else:
-#       current_block.append(stripped_line)
-
-#   if current_block:
-#     blocks.append(current_block)
-#   return blocks
 def markdown_to_blocks(markdown):
   blocks = markdown.split("\n\n")
   filtered_blocks = []

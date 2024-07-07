@@ -6,6 +6,7 @@ text_type_link = "link"
 text_type_image = "image"
 
 from enum import Enum
+from htmlnode import LeafNode
 
 class TextNodeType(Enum):
   TEXT = "text"
