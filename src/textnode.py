@@ -33,35 +33,35 @@ class TextNode:
       return f"TextNode({self.text}, {self.text_type}, {self.url})"
 
     
-def text_node_to_html_node(text_node):
-  from htmlnode import LeafNode
-  match(text_node.text_type):
-    case TextNodeType.TEXT:
-      return LeafNode(None, text_node.text)
-    case TextNodeType.BOLD:
-      return LeafNode("b", text_node.text)
-    case TextNodeType.ITALIC:
-      return LeafNode("i", text_node.text)
-    case TextNodeType.CODE:
-      return LeafNode("code", text_node.text)
-    case TextNodeType.LINK:
-      return LeafNode("a", text_node.text, props={"href": text_node.url})
-    case TextNodeType.IMAGE:
-      return LeafNode("img", "", props={"src": text_node.url, "alt": text_node.text})
-    case _:
-      raise ValueError("Invalid text node type")
-
 # def text_node_to_html_node(text_node):
-#     if text_node.text_type == text_type_text:
-#         return LeafNode(None, text_node.text)
-#     if text_node.text_type == text_type_bold:
-#         return LeafNode("b", text_node.text)
-#     if text_node.text_type == text_type_italic:
-#         return LeafNode("i", text_node.text)
-#     if text_node.text_type == text_type_code:
-#         return LeafNode("code", text_node.text)
-#     if text_node.text_type == text_type_link:
-#         return LeafNode("a", text_node.text, {"href": text_node.url})
-#     if text_node.text_type == text_type_image:
-#         return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
-#     raise ValueError(f"Invalid text type: {text_node.text_type}")
+#   from htmlnode import LeafNode
+#   match(text_node.text_type):
+#     case TextNodeType.TEXT:
+#       return LeafNode(None, text_node.text)
+#     case TextNodeType.BOLD:
+#       return LeafNode("b", text_node.text)
+#     case TextNodeType.ITALIC:
+#       return LeafNode("i", text_node.text)
+#     case TextNodeType.CODE:
+#       return LeafNode("code", text_node.text)
+#     case TextNodeType.LINK:
+#       return LeafNode("a", text_node.text, props={"href": text_node.url})
+#     case TextNodeType.IMAGE:
+#       return LeafNode("img", "", props={"src": text_node.url, "alt": text_node.text})
+#     case _:
+#       raise ValueError("Invalid text node type")
+
+def text_node_to_html_node(text_node):
+    if text_node.text_type == text_type_text:
+        return LeafNode(None, text_node.text)
+    if text_node.text_type == text_type_bold:
+        return LeafNode("b", text_node.text)
+    if text_node.text_type == text_type_italic:
+        return LeafNode("i", text_node.text)
+    if text_node.text_type == text_type_code:
+        return LeafNode("code", text_node.text)
+    if text_node.text_type == text_type_link:
+        return LeafNode("a", text_node.text, {"href": text_node.url})
+    if text_node.text_type == text_type_image:
+        return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
+    raise ValueError(f"Invalid text type: {text_node.text_type}")

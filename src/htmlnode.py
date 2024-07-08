@@ -33,18 +33,8 @@ class LeafNode(HTMLNode):
   #     )
 
   def to_html(self):
-    print("self.props: ", self.props)
-    props_string = ""
-    if isinstance(self.props, dict):
-      for prop in self.props:
-        props_string += f" {prop}='{self.props[prop]}'"
-    else:
-      print("self.props is not a dictionary")
-    return f"<{self.tag}{props_string}>{self.value}</{self.tag}>"
-
-
     if self.value is None:
-      raise ValueError("All leaf nodes require a value")
+      raise ValueError("Invalid HTML: All leaf nodes require a value")
     if self.tag is None:
       return self.value
     return f"<{self.tag}{self.props_to_html()}>{self.value}</{self.tag}>"
@@ -56,15 +46,14 @@ class ParentNode(HTMLNode):
   def __init__(self, tag, children, props=None):
     super().__init__(tag, None, children, props)
 
-  def __eq__(self, other):
-    if isinstance(other, ParentNode):
-      return (
-        self.tag == other.tag, 
-        self.children == other.children,
-        self.props == other.props
-      )
-  def __repr__(self):
-    return f"ParentNode(tag: {self.tag}, children: {self.children}, props: {self.props})"
+  # def __eq__(self, other):
+  #   if isinstance(other, ParentNode):
+  #     return (
+  #       self.tag == other.tag, 
+  #       self.children == other.children,
+  #       self.props == other.props
+      # )
+  
 
   def to_html(self):
     if self.tag is None:
@@ -76,6 +65,9 @@ class ParentNode(HTMLNode):
       for child in self.children:
         children_html += child.to_html()
       return f"<{self.tag}{self.props_to_html()}>{children_html}</{self.tag}>"
+
+  def __repr__(self):
+    return f"ParentNode(tag: {self.tag}, children: {self.children}, props: {self.props})"
       
 
 node = LeafNode("div", "example content", {"class": "example-class"})

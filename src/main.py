@@ -17,47 +17,53 @@ def extract_title(markdown):
 def generate_page(from_path, template_path, dest_path):
   print(f"Generating path from {from_path} to {dest_path}")
 
-  with open(from_path, "r") as from_file:
-    from_text = from_file.read()
+  from_file = open(from_path, "r")
+  markdown_content = from_file.read()
+  from_file.close()
 
-  print("From text read")
-
-  with open(template_path, "r") as template_file:
-    template_text = template_file.read()
+  template_file = open(template_path, "r")
+  template = template_file.read()
+  template_file.close()
 
   print("Template text read")
   
-  from_count = 0
-  for line in from_text.split("\n"):
-    from_count += 1 
+  # from_count = 0
+  # for line in from_text.split("\n"):
+  #   from_count += 1 
     # print(f"From line {from_count}: {line}")
-  template_count = 0
-  for line in template_text.split("\n"):
-    template_count += 1
+  # template_count = 0
+  # for line in template_text.split("\n"):
+  #   template_count += 1
     # print(f"Template line {template_count}: {line}")
 
   print("Converting from markdown to html")
+  
   # Convert markdown to HTML
-  html_node = markdown_to_html_node(from_text)
-  text_to_html = html_node.to_html()
-  print(f"Converted successfully: {text_to_html}")
+  node = markdown_to_html_node(markdown_content)
+  html = node.to_html()
+  print(f"Converted successfully: {html}")
 
   # Extract title
   print("Extracting title")
-  title = extract_title(from_text)
+  title = extract_title(markdown_content)
   print(f"Title extracted: {title}")
 
   # Replace placeholders
-  template_text = template_text.replace("{{ Title }}", title)
-  print(f"Replaced title: {template_text}")
-  template_text = template_text.replace("{{ Content }}", text_to_html)
-  print(f"Replaced content {template_text}")
+  template = template.replace("{{ Title }}", title)
+  print(f"Replaced title: {title}")
+  template = template.replace("{{ Content }}", html)
+  print(f"Replaced content {template}")
 
-  os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-  
-  with open(dest_path, "w") as dest_file:
-    dest_file.write(template_text)
+  dest_dir_path = os.path.dirname(dest_path)
+  if dest_dir_path == "":
+    os.makedirs(os.path.dirname(des), exist_ok=True)
+  to_file = open(dest_path, "w")
+
+  to_file.write(template)
   print(f"Generated page at {dest_path}")
+  # with open(dest_path, "w") as dest_file:
+  #   dest_file.write(template_text)
+  # print(f"Generated page at {dest_path}")
 
 def copy_static_files(origin, destination):
   
