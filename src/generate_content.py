@@ -14,7 +14,7 @@ def extract_title(markdown):
       return title
     raise ValueError("No title found")
 
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
   # Ensure destination directory exists
   origin = dir_path_content
   destination = dest_dir_path
