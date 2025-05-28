@@ -12,7 +12,7 @@ def extract_title(markdown):
     if line.startswith("# "):
       title = line[2:]
       return title
-    raise ValueError("No title found")
+  raise ValueError("No title found")
 
 def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, base_path):
   # Ensure destination directory exists
@@ -49,8 +49,10 @@ def generate_page(from_path, template_path, dest_path, base_path):
   # Update placeholders in template
   template = template.replace("{{ Title }}", title)
   template = template.replace("{{ Content }}", html)
-  template = template.replace('href="/', 'src="{base_path}')
-  template = template.replace('src="/', 'src="{base_path}')
+  template = template.replace('{base_path}', base_path)
+  template = template.replace('href="/', f'href="{base_path}')
+  template = template.replace('src="/', f'src="{base_path}')
+
 
   destination = os.path.dirname(dest_path)
   if destination != "":
