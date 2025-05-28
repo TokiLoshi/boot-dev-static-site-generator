@@ -24,12 +24,12 @@ def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, bas
     to_path = os.path.join(destination, file)
     if os.path.isfile(from_path):
       to_path = Path(to_path).with_suffix(".html")
-      generate_page(from_path, template_path, to_path)
+      generate_page(from_path, template_path, to_path, base_path)
     else:
-      generate_pages_recursive(from_path, template_path, to_path)
+      generate_pages_recursive(from_path, template_path, to_path, base_path)
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, base_path):
   print(f"Generating path from {from_path} to {dest_path}")
 
   from_file = open(from_path, "r")
@@ -49,12 +49,15 @@ def generate_page(from_path, template_path, dest_path):
   # Update placeholders in template
   template = template.replace("{{ Title }}", title)
   template = template.replace("{{ Content }}", html)
+  template = template.replace('href="/', 'src="{base_path}')
+  template = template.replace('src="/', 'src="{base_path}')
 
   destination = os.path.dirname(dest_path)
   if destination != "":
     os.makedirs(destination, exist_ok=True)
   to_file = open(dest_path, "w")
   to_file.write(template) 
+  to_file.close()
 
 
 def copy_static_files(origin, destination):

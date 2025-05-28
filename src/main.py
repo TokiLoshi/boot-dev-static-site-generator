@@ -7,16 +7,17 @@ from pathlib import Path
 from generate_content import generate_pages_recursive, copy_static_files
 
 static_dir_path = "./static"
-public_dir_path = "./public"
+public_dir_path = "./docs"
 content_dir_path = "./content"
 template_path = "./template.html"
-base_path = sys.argv[0]
-if base_path == " ":
+if len(sys.argv) > 1:
+    base_path = sys.argv[1]
+else:
     base_path = "/"
 
 
 def main():
-    print("Deleting public directory...")
+    print("Deleting docs directory...")
     if os.path.exists(public_dir_path):
         shutil.rmtree(public_dir_path)
 
@@ -25,7 +26,7 @@ def main():
 
     print("Generating html pages.")
     generate_pages_recursive(content_dir_path, template_path, public_dir_path, base_path)
-    print("All done. Changing directory to public and starting server")
+    print("All done. Changing directory to docs and starting server")
 
 
 
